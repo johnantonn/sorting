@@ -134,7 +134,10 @@ def _plot(rows: list[dict], path: Path) -> None:
 
     ax.set_xlabel("Dataset size N")
     ax.set_ylabel("Mean runtime (seconds)")
-    ax.set_title("Mean runtime vs dataset size N — all sorting implementations\n(log–log, bounded random integers; error bars: 95% bootstrap CI for the mean)")
+    ax.set_title(
+        "Mean runtime vs dataset size N — all sorting implementations\n"
+        "(log–log, bounded random integers; error bars: 95% bootstrap CI for the mean)"
+    )
     ax.set_xscale("log")
     ax.set_yscale("log")
     ax.legend(loc="best", fontsize=8)
