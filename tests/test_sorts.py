@@ -5,7 +5,7 @@ import random
 
 import pytest
 
-from sorting_algos.sorts import (
+from sorting.sorts import (
     bubble_sort,
     counting_sort,
     heap_sort,
@@ -119,7 +119,7 @@ def test_stability_equal_keys(sort_fn):
 
 
 def test_benchmark_factory_matches_keys():
-    from sorting_algos import default_key_upper_exclusive, make_benchmark_sorters
+    from sorting import default_key_upper_exclusive, make_benchmark_sorters
 
     n = 100
     k = default_key_upper_exclusive(n)

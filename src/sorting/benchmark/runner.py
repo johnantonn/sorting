@@ -19,7 +19,7 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import numpy as np
 
-from sorting_algos import default_key_upper_exclusive, make_benchmark_sorters, registered_sorter_names
+from sorting import default_key_upper_exclusive, make_benchmark_sorters, registered_sorter_names
 
 
 @dataclass(frozen=True)
@@ -104,25 +104,37 @@ def _write_csv(rows: list[dict], path: Path) -> None:
 def _plot(rows: list[dict], path: Path) -> None:
     if not rows:
         return
-    algorithms = sorted({r["algorithm"] for r in rows})
-    sizes = sorted({r["n"] for r in rows})
+    present = {r["algorithm"] for r in rows}
+    # One series per algorithm, ordered like the public benchmark registry so the legend matches docs.
+    algorithms = [a for a in registered_sorter_names() if a in present]
+    for a in sorted(present - set(algorithms)):
+        algorithms.append(a)
+    dataset_sizes_n = sorted({r["n"] for r in rows})
     by_alg = {a: {r["n"]: r for r in rows if r["algorithm"] == a} for a in algorithms}
 
-    fig, ax = plt.subplots(figsize=(10, 6))
+    fig, ax = plt.subplots(figsize=(11, 6))
     for name in algorithms:
-        means = [by_alg[name][n]["mean_seconds"] for n in sizes]
-        lows = [by_alg[name][n]["ci_low"] for n in sizes]
-        highs = [by_alg[name][n]["ci_high"] for n in sizes]
+        means = [by_alg[name][n]["mean_seconds"] for n in dataset_sizes_n]
+        lows = [by_alg[name][n]["ci_low"] for n in dataset_sizes_n]
+        highs = [by_alg[name][n]["ci_high"] for n in dataset_sizes_n]
         errs = [
             [max(0.0, m - lo), max(0.0, hi - m)]
             for m, lo, hi in zip(means, lows, highs, strict=True)
         ]
         yerr = np.array(errs).T
-        ax.errorbar(sizes, means, yerr=yerr, marker="o", capsize=3, label=name, linewidth=1.2)
+        ax.errorbar(
+            dataset_sizes_n,
+            means,
+            yerr=yerr,
+            marker="o",
+            capsize=3,
+            label=name,
+            linewidth=1.2,
+        )
 
-    ax.set_xlabel("n (list size)")
-    ax.set_ylabel("seconds per run (mean ± 95% bootstrap CI)")
-    ax.set_title("Sorting benchmark (bounded random integers)")
+    ax.set_xlabel("Dataset size N")
+    ax.set_ylabel("Mean runtime (seconds)")
+    ax.set_title("Mean runtime vs dataset size N — all sorting implementations\n(log–log, bounded random integers; error bars: 95% bootstrap CI for the mean)")
     ax.set_xscale("log")
     ax.set_yscale("log")
     ax.legend(loc="best", fontsize=8)
@@ -137,8 +149,8 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument(
         "--sizes",
         type=str,
-        default="64,128,256,512,1024,2048",
-        help="Comma-separated input sizes (default: %(default)s)",
+        default="32,64,128,256,512,1024,2048,4096,8192",
+        help="Comma-separated dataset sizes N to benchmark (default: powers of two from 32 through 8192)",
     )
     parser.add_argument("--runs", type=int, default=40, help="Repeated timing runs per (algorithm, n)")
     parser.add_argument("--seed", type=int, default=42, help="RNG seed for reproducible inputs")

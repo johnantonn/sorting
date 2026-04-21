@@ -4,7 +4,7 @@ from pathlib import Path
 
 import pytest
 
-from sorting_algos.benchmark.runner import BenchmarkConfig, run_benchmark
+from sorting.benchmark.runner import BenchmarkConfig, run_benchmark
 
 
 def test_run_benchmark_returns_rows():
@@ -33,7 +33,7 @@ def test_run_benchmark_returns_rows():
 
 @pytest.mark.parametrize("bad", ["0", "-1", "10,-5"])
 def test_cli_rejects_invalid_sizes(bad):
-    from sorting_algos.benchmark.runner import main
+    from sorting.benchmark.runner import main
 
     with pytest.raises(SystemExit):
         main(["--sizes", bad])

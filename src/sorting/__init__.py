@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from typing import Callable
 
-from sorting_algos.sorts import (
+from sorting.sorts import (
     bubble_sort,
     counting_sort,
     heap_sort,

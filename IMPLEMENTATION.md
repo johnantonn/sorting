@@ -80,7 +80,12 @@ given `(n, seed)`.
 
 ## Benchmarking methodology
 
-For each `n`, one random vector is built from bounded integers. Each sort is run
+You supply **multiple** values of **N** (dataset size); the harness steps through
+each in turn. The generated plot is **mean runtime vs N** with **one curve per
+algorithm** (log–log axes), so you can see scaling across sizes and compare every
+implementation on the same figure.
+
+For each **N**, one random vector is built from bounded integers. Each sort is run
 `runs` times on a **fresh copy** of that vector — timings are **independent** of
 one another and use `time.perf_counter()`.
 
@@ -92,9 +97,9 @@ resampled means of those runtimes (default 2000 resamples). This approximates a
 standard choice; it assumes approximate normality of runtimes. Profiling noise is
 often heavy-tailed; bootstrap is robust enough for exploratory comparisons.
 
-**Interpretation:** Bars compare **average** performance on one synthetic
-distribution; they do not prove ranking on all inputs (Timsort’s adaptivity is
-hidden in a single random vector per `n`).
+**Interpretation:** Error bars compare **average** performance on one synthetic
+distribution at each **N**; they do not prove ranking on all inputs (Timsort’s
+adaptivity is hidden in a single random vector per **N**).
 
 ## Extensions
 

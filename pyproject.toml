@@ -1,5 +1,5 @@
 [project]
-name = "sorting-algos"
+name = "sorting"
 version = "0.1.0"
 description = "Classical sorting algorithms in Python with pytest coverage and timing benchmarks."
 readme = "README.md"

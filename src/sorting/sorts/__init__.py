@@ -1,7 +1,7 @@
 """Classical sorting algorithm implementations."""
 
-from sorting_algos.sorts.baseline import timsort
-from sorting_algos.sorts.comparison import (
+from sorting.sorts.baseline import timsort
+from sorting.sorts.comparison import (
     bubble_sort,
     heap_sort,
     insertion_sort,
@@ -9,7 +9,7 @@ from sorting_algos.sorts.comparison import (
     quick_sort,
     selection_sort,
 )
-from sorting_algos.sorts.distribution import counting_sort
+from sorting.sorts.distribution import counting_sort
 
 __all__ = [
     "bubble_sort",
