@@ -2,6 +2,12 @@
 
 Educational Python implementations of common **comparison-based** sorts (bubble, insertion, selection, merge, quick, heap), **distribution** counting sort on bounded non-negative integers, and a **Timsort** baseline via `list.sort()`. The package ships with **pytest** coverage and a **benchmark CLI** that plots mean wall-clock time versus dataset size with **95% bootstrap intervals** on the mean (see [IMPLEMENTATION.md](IMPLEMENTATION.md) for methodology).
 
+> **Status:** Personal / portfolio archive — **not actively maintained** beyond occasional tidying. Tooling should still be straightforward on modern Python.
+
+## How to run
+
+Install in editable mode from the repo root (`pip install -e .` or `pip install -e ".[dev]"` if defined), then run **`pytest`** from the repository root. For benchmarks, use the CLI under `src/sorting/benchmark/` (see [IMPLEMENTATION.md](IMPLEMENTATION.md) for flags and output paths).
+
 ## Overview
 
 - **`src/sorting/sorts/`** — Pure-Python sorters with a small, consistent contract: each routine sorts a list **in place** (except where noted in tests).
